@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ES6 Promise</title>
+  </head>
+  <body>
+    <script src="./js/promise.js"></script>
+    <script>
+      var pro = new Pro();
+      pro.promise.then(function() {
+         return pro.doSomething(function(resolve) {
+           setTimeout(function() {
+            console.log('1');
+            resolve();
+           }, 1000);
+         });
+       }).then(function() {
+        return pro.doSomething(function(resolve) {
+          setTimeout(function() {
+            console.log('2');
+            resolve();
+           }, 1000);
+         });
+       })
+       .then(function() {
+        return pro.doSomething(function(resolve, reject) {
+          setTimeout(function() {
+            console.log('3');
+            reject('エラーが発生しました');
+           }, 1000);
+         });
+       })
+       .then(function() {
+        return pro.doSomething(function(resolve) {
+          setTimeout(function() {
+            console.log('4');
+            resolve();
+           }, 1000);
+         });
+       })
+       .catch(function(err) {
+        pro.doError(function(err) {
+          console.log('err: ' + err);
+        }(err));
+       });
+    </script>
+  </body>
+</html>

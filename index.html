@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ES6 Promise</title>
+  </head>
+  <body>
+    <script>
+      function c(text = 'text', speed = 5000) {
+        return new Promise(function(resolve, reject) {
+          console.log(text);
+          setTimeout(function() {
+            resolve();
+          }, speed);
+        });
+      }
+
+      function onRejected(error) {
+        console.log("error = " + error+"\r\n");
+        process.exit(1);
+      }
+
+      Promise.resolve()
+       .then(function() {
+         return c(1);
+       })
+       .then(function() {
+         return c(2);
+       })
+       .then(function() {
+         return c(3);
+       })
+       .then(function() {
+         return c(4);
+       })
+       .catch(onRejected)
+    </script>
+  </body>
+</html>
