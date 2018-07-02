@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ES6 Promise</title>
+  </head>
+  <body>
+    <h1>検証してください</h1>
+    <p>
+      IEはpromiseが使えないのでpolyfillを使う<br>
+      <a href="https://www.npmjs.com/package/es6-promise">https://www.npmjs.com/package/es6-promise</a>
+    </p>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <script>
+      /**
+       * これはエラーあっても捉えられない
+       */
+      // setTimeout(() => {
+      //   console.log("1) 3 seconds passed");
+      // }, 3000);
+
+      /**
+       * setTimeoutをラップした関数を作ってcatchできるようにする
+       */
+      // const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+      // wait(3000).then(() => console.log('2) 3 seconds passed')).catch(function() {
+      //   console.log('err');
+      // });
+
+      /** 
+       * es5だとこんなかんじ
+       */
+      function wait(ms) {
+        return new Promise(function(resolve) {
+          setTimeout(resolve, ms);
+        });
+      }
+
+      wait(2000).then(function() {
+        // ここでエラーが起きたらcatchにいく
+        console.log('3) 2seconds wait');
+      }).catch(function() {
+        console.log('err');
+      });
+    </script>
+  </body>
+</html>
