@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Promise</title>
+    </head>
+    <body>
+        <h1>検証してみてください</h1>
+        <h2>非同期通信は全てpromiseを返した方が使いやすい</h2>
+        <a href="https://sota1235.hatenablog.com/entry/2016/04/12/103246">これからのJSの非同期処理関数は全てPromiseを返させるべき</a>
+        <ul>
+            <li>ネストが浅くなる</li>
+            <li>データの取得とその後の処理を分割できる</li>
+            <li>thenで繋ぐことができるようになるので、非同期通信を待って処理するという流れが簡単になる</li>
+        </ul>
+        <!-- Minified version of `es6-promise-auto` below. -->
+        <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script> 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script>
+
+            // ES5 ------------------------------------------------------------------------------
+
+            // function ajax(url, data) {
+            //     return new Promise(function(resolve, reject) {
+            //         $.ajax({url: url, data: data}).then(function(data) {
+            //             resolve(JSON.parse(data));
+            //         }, function() {
+            //             reject(JSON.parse(data));
+            //         });
+            //     });
+            // }
+
+            // var dataOptions = {
+            //     method: 'GET',
+            //     dataType: 'json'
+            // };
+            
+            // // こんな感じで繋げる
+            // var resultList = [];
+            // ajax('./ajax/ajax1.html', dataOptions).then(function(data) {
+            //     addList(resultList, data);
+            //     return ajax('./ajax/ajax2.html', dataOptions);
+            // }).then(function(data) {
+            //     addList(resultList, data);
+            //     return ajax('./ajax/ajax3.html', dataOptions);
+            // }).then(function(data) {
+            //     addList(resultList, data);
+            //     console.log(resultList);
+            // });
+
+            // function addList(baseList, addList) {
+            //     for (var i = 0; i < addList.length; i++) {
+            //         baseList.push(addList[i]);
+            //     }
+            // }
+
+
+
+            // ES6 で書いてみる ------------------------------------------------------------------------------
+            const ajax = (url, data) => {
+                return new Promise((resolve, reject) => {
+                    $.ajax({url: url, data: data})
+                        .then((data) => resolve(JSON.parse(data)), (data) => reject(JSON.parse(data)))
+                });
+            };
+
+            let resultList = [];
+            const dataOptions = {
+                method: 'GET',
+                dataType: 'json'
+            };
+
+            ajax('./ajax/ajax1.html', dataOptions)
+                .then((data) => { resultList.push(...data); return ajax('./ajax/ajax2.html', dataOptions); })
+                .then((data) => { resultList.push(...data); return ajax('./ajax/ajax3.html', dataOptions); })
+                .then((data) => { resultList.push(...data); console.log(resultList); });
+
+            // ES6 楽しい！！！
+
+        </script>
+    </body>
+</html>
